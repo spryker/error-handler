@@ -13,11 +13,6 @@ use Throwable;
 
 class ErrorHandlerEnvironment
 {
-    /**
-     * @var array<int>
-     */
-    protected const ERRORS_FATAL = [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR];
-
     public function __construct()
     {
         $errorCode = error_reporting();
@@ -84,10 +79,8 @@ class ErrorHandlerEnvironment
     protected function setExceptionHandler()
     {
         $exceptionHandler = function (Throwable $exception): void {
-            $errorHandlerClosure = $this->getErrorHandler();
-            /** @var \Spryker\Shared\ErrorHandler\ErrorHandler $errorHandler */
-            $errorHandler = $errorHandlerClosure();
-            $errorHandler->handleException($exception);
+            $errorHandler = $this->getErrorHandler();
+            $errorHandler()->handleException($exception);
         };
 
         set_exception_handler($exceptionHandler);
@@ -100,11 +93,12 @@ class ErrorHandlerEnvironment
     {
         $shutDownFunction = function (): void {
             $lastError = error_get_last();
-            if ($lastError && in_array($lastError['type'], static::ERRORS_FATAL)) {
-                $errorHandlerClosure = $this->getErrorHandler();
-                /** @var \Spryker\Shared\ErrorHandler\ErrorHandler $errorHandler */
-                $errorHandler = $errorHandlerClosure();
-                $errorHandler->handleFatal();
+            $fatalErrors = [
+            E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR,
+            ];
+            if ($lastError && in_array($lastError['type'], $fatalErrors)) {
+                $errorHandler = $this->getErrorHandler();
+                $errorHandler()->handleFatal();
             }
         };
 
