@@ -21,6 +21,6 @@ class ApiErrorRenderer implements ErrorRendererInterface
      */
     public function render($exception)
     {
-        return static::DEFAULT_ERROR_MESSAGE . ' (' . $exception->getMessage() . ')';
+        return static::DEFAULT_ERROR_MESSAGE;
     }
 }
