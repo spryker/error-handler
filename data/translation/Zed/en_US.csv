@@ -1,1 +1,5 @@
 Error,Error
+error-handler.error-404.subtitle,"We couldn't find the page you were looking for."
+error-handler.error-404.text,"It may have been moved, renamed, or you might not have access to it."
+error.back,Back
+error.return-home,"Return home"

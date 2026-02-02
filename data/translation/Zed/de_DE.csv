@@ -1,1 +1,5 @@
 Error,Fehler
+error-handler.error-404.subtitle,"Wir konnten die Seite, die Sie suchen, nicht finden."
+error-handler.error-404.text,"Sie wurde möglicherweise verschoben, umbenannt oder Sie haben keinen Zugriff darauf."
+error.back,Zurück
+error.return-home,"Zur Startseite"

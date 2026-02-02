@@ -1,8 +1,34 @@
-{% extends '@Gui/Layout/layout.twig' %}
+<!DOCTYPE html>
+<html data-application-locale="{{ app.locale }}" lang="{{ (app.locale | slice(0, 2)) | lower }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block content %}
-    <div class="box">
-        <h1>{{ 'Error' | trans | upper }} {% block errorCode %}{% if errorCode is defined %}{{ errorCode }}{% endif %}{% endblock %}</h1>
-        <p>{% block errorMessage %} {{ error }} {% endblock %}</p>
-    </div>
-{% endblock %}
+        <title>{% block head_title %}{% if title is defined %}{{ title | trans }}{% endif %}{% endblock %}</title>
+
+        {% block head_css %}
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            
+            <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+            <link rel="stylesheet" href="{{ assetsPath('css/spryker-zed-error-handler.css') }}">
+        {% endblock %}
+    </head>
+    <body>
+        {% block content %}
+            {% block errorCode %}
+                {% if errorCode is defined %}
+                    <h1 class="error-code">
+                        {{ errorCode }}
+                    </h1>
+                {% endif %}
+            {% endblock %}
+
+            {% block errorMessage %}
+                <p>{{ error }}</p>
+            {% endblock %}
+
+            {% block errorActions %}{% endblock %}
+        {% endblock %}
+    </body>
+</html>
