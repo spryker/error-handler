@@ -98,9 +98,9 @@ class ErrorHandlerFactory
      */
     protected function getUtilSanitizeService(): UtilSanitizeServiceInterface
     {
-        /** @var \Generated\Service\Ide\AutoCompletion&\Spryker\Shared\Kernel\LocatorLocatorInterface $locator */
         $locator = Locator::getInstance();
 
+        /** @phpstan-ignore method.notFound */
         return $locator->utilSanitize()->service();
     }
 
