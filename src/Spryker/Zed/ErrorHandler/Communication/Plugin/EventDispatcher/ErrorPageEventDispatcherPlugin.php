@@ -12,7 +12,9 @@ use Spryker\Shared\EventDispatcher\EventDispatcherInterface;
 use Spryker\Shared\EventDispatcherExtension\Dependency\Plugin\EventDispatcherPluginInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -68,6 +70,25 @@ class ErrorPageEventDispatcherPlugin extends AbstractPlugin implements EventDisp
             $event->stopPropagation();
 
             break;
+        }
+
+        if (!$event->hasResponse()) {
+            $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
+            if ($exception instanceof HttpExceptionInterface) {
+                $statusCode = $exception->getStatusCode();
+            }
+            if (
+                $statusCode === Response::HTTP_INTERNAL_SERVER_ERROR ||
+                $statusCode === Response::HTTP_NOT_FOUND ||
+                $statusCode === Response::HTTP_FORBIDDEN
+            ) {
+                return;
+            }
+            if ($statusCode >= 400 && isset(Response::$statusTexts[$statusCode])) {
+                $response = new Response($statusCode . ' ' . Response::$statusTexts[$statusCode], $statusCode);
+                $event->setResponse($response);
+                $event->stopPropagation();
+            }
         }
     }
 }
