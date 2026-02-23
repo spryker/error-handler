@@ -36,6 +36,11 @@ class ErrorHandlerDependencyProvider extends AbstractBundleDependencyProvider
     public const SERVICE_KERNEL = 'kernel';
 
     /**
+     * @uses \Spryker\Zed\Twig\Communication\Plugin\Application\TwigApplicationPlugin::SERVICE_TWIG
+     */
+    public const string SERVICE_TWIG = 'twig';
+
+    /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
      * @return \Spryker\Zed\Kernel\Container
@@ -44,6 +49,7 @@ class ErrorHandlerDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container = $this->addRequestStack($container);
         $container = $this->addKernel($container);
+        $container = $this->addTwig($container);
         $container = $this->addExceptionHandlerStrategyPlugins($container);
 
         return $container;
@@ -72,6 +78,15 @@ class ErrorHandlerDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container->set(static::SERVICE_KERNEL, function (ContainerInterface $container) {
             return $container->getApplicationService(static::SERVICE_KERNEL);
+        });
+
+        return $container;
+    }
+
+    protected function addTwig(Container $container): Container
+    {
+        $container->set(static::SERVICE_TWIG, function (ContainerInterface $container) {
+            return $container->getApplicationService(static::SERVICE_TWIG);
         });
 
         return $container;

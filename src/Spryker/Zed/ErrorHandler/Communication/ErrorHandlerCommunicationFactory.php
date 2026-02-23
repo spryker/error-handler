@@ -11,6 +11,7 @@ use Spryker\Zed\ErrorHandler\ErrorHandlerDependencyProvider;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Twig\Environment;
 
 /**
  * @method \Spryker\Zed\ErrorHandler\ErrorHandlerConfig getConfig()
@@ -31,6 +32,11 @@ class ErrorHandlerCommunicationFactory extends AbstractCommunicationFactory
     public function getKernel(): HttpKernelInterface
     {
         return $this->getProvidedDependency(ErrorHandlerDependencyProvider::SERVICE_KERNEL);
+    }
+
+    public function getTwig(): Environment
+    {
+        return $this->getProvidedDependency(ErrorHandlerDependencyProvider::SERVICE_TWIG);
     }
 
     /**
