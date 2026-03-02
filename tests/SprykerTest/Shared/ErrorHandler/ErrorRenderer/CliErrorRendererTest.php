@@ -23,9 +23,6 @@ use Spryker\Shared\ErrorHandler\ErrorRenderer\CliErrorRenderer;
  */
 class CliErrorRendererTest extends Unit
 {
-    /**
-     * @return void
-     */
     public function testRenderExceptionShouldReturnString(): void
     {
         $errorRenderer = new CliErrorRenderer();

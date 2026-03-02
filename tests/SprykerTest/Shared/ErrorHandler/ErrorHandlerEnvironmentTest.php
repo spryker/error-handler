@@ -21,9 +21,6 @@ use Spryker\Shared\ErrorHandler\ErrorHandlerEnvironment;
  */
 class ErrorHandlerEnvironmentTest extends Unit
 {
-    /**
-     * @return void
-     */
     public function testInitializeShouldSetErrorHandler(): void
     {
         $errorHandlerEnvironment = new ErrorHandlerEnvironment();
@@ -32,9 +29,6 @@ class ErrorHandlerEnvironmentTest extends Unit
         $this->resetHandlersToDefault();
     }
 
-    /**
-     * @return void
-     */
     protected function resetHandlersToDefault(): void
     {
         restore_error_handler();

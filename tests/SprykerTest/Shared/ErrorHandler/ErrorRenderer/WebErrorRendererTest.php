@@ -23,9 +23,6 @@ use Spryker\Shared\ErrorHandler\ErrorRenderer\WebExceptionErrorRenderer;
  */
 class WebErrorRendererTest extends Unit
 {
-    /**
-     * @return void
-     */
     public function testRenderExceptionShouldReturnString(): void
     {
         $errorRenderer = new WebExceptionErrorRenderer();

@@ -18,17 +18,11 @@ use Twig\Environment;
  */
 class ErrorHandlerCommunicationFactory extends AbstractCommunicationFactory
 {
-    /**
-     * @return \Symfony\Component\HttpFoundation\RequestStack
-     */
     public function getRequestStack(): RequestStack
     {
         return $this->getProvidedDependency(ErrorHandlerDependencyProvider::SERVICE_REQUEST_STACK);
     }
 
-    /**
-     * @return \Symfony\Component\HttpKernel\HttpKernelInterface
-     */
     public function getKernel(): HttpKernelInterface
     {
         return $this->getProvidedDependency(ErrorHandlerDependencyProvider::SERVICE_KERNEL);

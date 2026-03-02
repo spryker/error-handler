@@ -33,9 +33,6 @@ class ErrorHandlerTest extends Unit
      */
     protected $tester;
 
-    /**
-     * @return void
-     */
     public function testIfHandleExceptionThrowsExceptionErrorLoggerShouldLogBeforeExceptionAndLogExceptionAndSendExitCode(): void
     {
         $errorLoggerMock = $this->getErrorLoggerMock();
@@ -54,9 +51,6 @@ class ErrorHandlerTest extends Unit
         $errorHandlerMock->handleException($exception);
     }
 
-    /**
-     * @return void
-     */
     public function testZedErrorPageSends404StatusForNotFoundHttpException(): void
     {
         // Arrange
@@ -70,9 +64,6 @@ class ErrorHandlerTest extends Unit
         $errorHandlerMock->handleException($exception);
     }
 
-    /**
-     * @return void
-     */
     public function testHandleExceptionSanitizesExceptionMessageBeforeRendering(): void
     {
         $errorLoggerMock = $this->getErrorLoggerMock();
@@ -101,9 +92,6 @@ class ErrorHandlerTest extends Unit
         $errorHandlerMock->handleException($exception);
     }
 
-    /**
-     * @return void
-     */
     public function testIfHandleExceptionThrowsExceptionErrorLoggerShouldLogBeforeExceptionAndLogExceptionAndShouldNotSendExitCode(): void
     {
         $errorLoggerMock = $this->getErrorLoggerMock();
@@ -122,9 +110,6 @@ class ErrorHandlerTest extends Unit
         $errorHandlerMock->handleException($exception, false);
     }
 
-    /**
-     * @return void
-     */
     public function testHandleExceptionShouldLogRenderErrorAndSendExitCode(): void
     {
         $errorLoggerMock = $this->getErrorLoggerMock();
@@ -141,9 +126,6 @@ class ErrorHandlerTest extends Unit
         $errorHandlerMock->handleException(new Exception());
     }
 
-    /**
-     * @return void
-     */
     public function testHandleExceptionShouldLogRenderErrorAndNotSendExitCode(): void
     {
         $errorLoggerMock = $this->getErrorLoggerMock();
@@ -160,9 +142,6 @@ class ErrorHandlerTest extends Unit
         $errorHandlerMock->handleException(new Exception(), false);
     }
 
-    /**
-     * @return void
-     */
     public function testHandleFatalShouldCallHandleExceptionWhenLastErrorExists(): void
     {
         $errorLoggerMock = $this->getErrorLoggerMock();
@@ -176,9 +155,6 @@ class ErrorHandlerTest extends Unit
         $errorHandlerMock->handleFatal();
     }
 
-    /**
-     * @return void
-     */
     public function testHandleFatalShouldNotCallHandleExceptionWhenNoLastErrorExists(): void
     {
         $errorLoggerMock = $this->getErrorLoggerMock();

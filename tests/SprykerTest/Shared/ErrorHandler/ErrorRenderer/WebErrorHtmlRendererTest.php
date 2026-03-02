@@ -27,9 +27,6 @@ use Spryker\Shared\ErrorHandler\ErrorRenderer\WebHtmlErrorRenderer;
  */
 class WebErrorHtmlRendererTest extends Unit
 {
-    /**
-     * @return void
-     */
     public function testWhenZedErrorPageCanRequiredRequireErrorPage(): void
     {
         $this->setupConfigForZedErrorPage();
@@ -40,9 +37,6 @@ class WebErrorHtmlRendererTest extends Unit
         $errorPageMock->render(new Exception());
     }
 
-    /**
-     * @return void
-     */
     protected function setupConfigForZedErrorPage(): void
     {
         $configKey = ErrorHandlerConstants::ZED_ERROR_PAGE;
@@ -51,9 +45,6 @@ class WebErrorHtmlRendererTest extends Unit
         $this->prepareConfig($configKey, $configValue);
     }
 
-    /**
-     * @return void
-     */
     public function testWhenYvesErrorPageCanRequiredRequireErrorPage(): void
     {
         $this->setupConfigForYvesErrorPage();
@@ -64,9 +55,6 @@ class WebErrorHtmlRendererTest extends Unit
         $errorPageMock->render(new Exception());
     }
 
-    /**
-     * @return void
-     */
     protected function setupConfigForYvesErrorPage(): void
     {
         $configKey = ErrorHandlerConstants::YVES_ERROR_PAGE;
@@ -75,12 +63,6 @@ class WebErrorHtmlRendererTest extends Unit
         $this->prepareConfig($configKey, $configValue);
     }
 
-    /**
-     * @param string $configKey
-     * @param string $configValue
-     *
-     * @return void
-     */
     protected function prepareConfig(string $configKey, string $configValue): void
     {
         $reflection = new ReflectionClass(Config::class);

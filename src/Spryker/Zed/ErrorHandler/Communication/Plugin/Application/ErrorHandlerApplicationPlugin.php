@@ -41,9 +41,6 @@ class ErrorHandlerApplicationPlugin extends AbstractPlugin implements Applicatio
         return $container;
     }
 
-    /**
-     * @return void
-     */
     protected function registerPrettyErrorHandler(): void
     {
         $whoops = new Run();
@@ -53,9 +50,6 @@ class ErrorHandlerApplicationPlugin extends AbstractPlugin implements Applicatio
         $whoops->register();
     }
 
-    /**
-     * @return \Whoops\Handler\HandlerInterface
-     */
     protected function getPrettyPageHandler(): HandlerInterface
     {
         $userPath = $this->getConfig()->getUserBasePath();
@@ -82,9 +76,6 @@ class ErrorHandlerApplicationPlugin extends AbstractPlugin implements Applicatio
         return $handler;
     }
 
-    /**
-     * @return \Whoops\Handler\HandlerInterface
-     */
     protected function getErrorLoggerCallbackHandler(): HandlerInterface
     {
         return new CallbackHandler(function ($exception) {

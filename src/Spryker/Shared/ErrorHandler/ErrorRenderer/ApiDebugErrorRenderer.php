@@ -36,9 +36,6 @@ class ApiDebugErrorRenderer implements ErrorRendererInterface
         return $errorMessage;
     }
 
-    /**
-     * @return string
-     */
     protected function getUri(): string
     {
         $uri = (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] : 'n/a';

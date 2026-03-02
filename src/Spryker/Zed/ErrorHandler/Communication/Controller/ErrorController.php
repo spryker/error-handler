@@ -49,11 +49,6 @@ class ErrorController extends AbstractController
         ]);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return string|null
-     */
     protected function defineErrorMessage(Request $request): ?string
     {
         /** @var \Symfony\Component\ErrorHandler\Exception\FlattenException|null $exception */
@@ -66,11 +61,6 @@ class ErrorController extends AbstractController
         return null;
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return int|null
-     */
     protected function defineErrorCode(Request $request): ?int
     {
         /** @var \Symfony\Component\ErrorHandler\Exception\FlattenException|null $exception */

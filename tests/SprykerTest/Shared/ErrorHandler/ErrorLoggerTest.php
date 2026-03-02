@@ -24,9 +24,6 @@ use Spryker\Shared\ErrorHandler\ErrorLogger;
  */
 class ErrorLoggerTest extends Unit
 {
-    /**
-     * @return void
-     */
     public function testLogShouldAddCriticalLogAndNoticeErrorToMonitoring(): void
     {
         $loggerMock = $this->getLoggerMock();
@@ -41,9 +38,6 @@ class ErrorLoggerTest extends Unit
         $errorLoggerMock->log($exception);
     }
 
-    /**
-     * @return void
-     */
     public function testWhenLoggerThrowsExceptionLogShouldNoticeErrorToMonitoring(): void
     {
         $exception = new Exception('TestException');

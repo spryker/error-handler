@@ -93,9 +93,6 @@ class ErrorHandlerFactory
         return $this->createWebErrorRenderer($errorRendererClassName);
     }
 
-    /**
-     * @return \Spryker\Service\UtilSanitize\UtilSanitizeServiceInterface
-     */
     protected function getUtilSanitizeService(): UtilSanitizeServiceInterface
     {
         $locator = Locator::getInstance();

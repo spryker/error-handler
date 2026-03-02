@@ -49,11 +49,6 @@ class ErrorPageEventDispatcherPlugin extends AbstractPlugin implements EventDisp
         return $eventDispatcher;
     }
 
-    /**
-     * @param \Symfony\Component\HttpKernel\Event\ExceptionEvent $event
-     *
-     * @return void
-     */
     protected function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();

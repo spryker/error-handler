@@ -40,11 +40,6 @@ class ErrorHandlerDependencyProvider extends AbstractBundleDependencyProvider
      */
     public const string SERVICE_TWIG = 'twig';
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     public function provideCommunicationLayerDependencies(Container $container): Container
     {
         $container = $this->addRequestStack($container);
@@ -55,11 +50,6 @@ class ErrorHandlerDependencyProvider extends AbstractBundleDependencyProvider
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addRequestStack(Container $container): Container
     {
         $container->set(static::SERVICE_REQUEST_STACK, function (ContainerInterface $container) {
@@ -69,11 +59,6 @@ class ErrorHandlerDependencyProvider extends AbstractBundleDependencyProvider
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addKernel(Container $container): Container
     {
         $container->set(static::SERVICE_KERNEL, function (ContainerInterface $container) {
@@ -92,11 +77,6 @@ class ErrorHandlerDependencyProvider extends AbstractBundleDependencyProvider
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addExceptionHandlerStrategyPlugins(Container $container): Container
     {
         $container->set(static::PLUGINS_EXCEPTION_HANDLER, function () {

@@ -34,27 +34,18 @@ class ErrorHandlerFactoryTest extends Unit
      */
     protected $configCache;
 
-    /**
-     * @return void
-     */
     public function setUp(): void
     {
         $reflectionProperty = $this->getConfigReflectionProperty();
         $this->configCache = $reflectionProperty->getValue();
     }
 
-    /**
-     * @return void
-     */
     public function tearDown(): void
     {
         $reflectionProperty = $this->getConfigReflectionProperty();
         $reflectionProperty->setValue($this->configCache);
     }
 
-    /**
-     * @return \ReflectionProperty
-     */
     protected function getConfigReflectionProperty(): ReflectionProperty
     {
         $reflection = new ReflectionClass(Config::class);
@@ -64,9 +55,6 @@ class ErrorHandlerFactoryTest extends Unit
         return $reflectionProperty;
     }
 
-    /**
-     * @return void
-     */
     public function testCreateErrorHandlerShouldReturnErrorHandlerWithCliErrorRendererWhenSapiIsCli(): void
     {
         $errorHandlerFactoryMock = $this->getErrorHandlerFactoryMock('ZED', ['isCliCall', 'createCliRenderer']);
@@ -77,9 +65,6 @@ class ErrorHandlerFactoryTest extends Unit
         $this->assertInstanceOf(ErrorHandler::class, $errorHandler);
     }
 
-    /**
-     * @return void
-     */
     public function testCreateErrorHandlerShouldReturnErrorHandlerWithWebHtmlErrorRendererAsDefaultWhenSapiNotCliAndNoConfigGiven(): void
     {
         $errorHandlerFactoryMock = $this->getErrorHandlerFactoryMock('ZED', ['isCliCall', 'createWebErrorRenderer']);
@@ -94,9 +79,6 @@ class ErrorHandlerFactoryTest extends Unit
         $this->assertInstanceOf(ErrorHandler::class, $errorHandler);
     }
 
-    /**
-     * @return void
-     */
     public function testCreateErrorHandlerShouldReturnErrorHandlerWithConfiguredWebExceptionErrorRendererWhenSapiNotCliAndErrorRendererConfigGiven(): void
     {
         $errorHandlerFactoryMock = $this->getErrorHandlerFactoryMock('ZED', ['isCliCall', 'createWebErrorRenderer']);
@@ -115,9 +97,6 @@ class ErrorHandlerFactoryTest extends Unit
         $this->assertInstanceOf(ErrorHandler::class, $errorHandler);
     }
 
-    /**
-     * @return void
-     */
     public function testCreateErrorHandlerShouldReturnErrorHandlerWithConfiguredWebHtmlErrorRendererWhenSapiNotCliAndErrorRendererConfigGiven(): void
     {
         $errorHandlerFactoryMock = $this->getErrorHandlerFactoryMock('ZED', ['isCliCall', 'createWebErrorRenderer']);
@@ -150,9 +129,6 @@ class ErrorHandlerFactoryTest extends Unit
             ->getMock();
     }
 
-    /**
-     * @return void
-     */
     protected function unsetAllErrorRelatedConfigs(): void
     {
         $configProperty = $this->getConfigReflectionProperty();
