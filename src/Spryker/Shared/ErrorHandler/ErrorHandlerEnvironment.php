@@ -65,6 +65,12 @@ class ErrorHandlerEnvironment
         $errorHandler = function ($severity, $message, $file, $line) {
             $exception = new ErrorException($message, 0, $severity, $file, $line);
 
+            if ((error_reporting() & $severity) === 0) {
+                ErrorLogger::getInstance()->logSuppressed($exception);
+
+                return false;
+            }
+
             $levelsNotThrowingExceptions = Config::get(ErrorHandlerConstants::ERROR_LEVEL_LOG_ONLY, 0);
             $shouldThrowException = ($severity & $levelsNotThrowingExceptions) === 0;
             if ($shouldThrowException) {

@@ -44,7 +44,24 @@ class ErrorLogger implements ErrorLoggerInterface
             $this->createMonitoringService()->setError($message, $exception);
             $this->getLogger()->critical($message, ['exception' => $exception]);
         } catch (Throwable $internalException) {
+            $this->reportInternalFailure($internalException, $exception);
+        }
+    }
+
+    public function logSuppressed(Throwable $exception): void
+    {
+        try {
+            $this->getLogger()->notice($this->buildMessage($exception), ['exception' => $exception]);
+        } catch (Throwable $internalException) {
+            $this->reportInternalFailure($internalException, $exception);
+        }
+    }
+
+    protected function reportInternalFailure(Throwable $internalException, Throwable $exception): void
+    {
+        try {
             $this->createMonitoringService()->setError($internalException->getMessage(), $exception);
+        } catch (Throwable) {
         }
     }
 
