@@ -50,7 +50,6 @@ class ErrorHandlerFactoryTest extends Unit
     {
         $reflection = new ReflectionClass(Config::class);
         $reflectionProperty = $reflection->getProperty('config');
-        $reflectionProperty->setAccessible(true);
 
         return $reflectionProperty;
     }

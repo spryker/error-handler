@@ -67,7 +67,6 @@ class WebErrorHtmlRendererTest extends Unit
     {
         $reflection = new ReflectionClass(Config::class);
         $reflectionProperty = $reflection->getProperty('config');
-        $reflectionProperty->setAccessible(true);
 
         $config = $reflectionProperty->getValue();
         $config[$configKey] = $configValue;

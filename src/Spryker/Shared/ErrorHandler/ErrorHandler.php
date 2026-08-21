@@ -176,7 +176,6 @@ class ErrorHandler
     protected function injectSanitizedMessageIntoException(Throwable $exception, string $sanitizedExceptionMessage): Throwable
     {
         $exceptionMessageProperty = new ReflectionProperty($exception, 'message');
-        $exceptionMessageProperty->setAccessible(true);
         $exceptionMessageProperty->setValue($exception, $sanitizedExceptionMessage);
 
         return $exception;
