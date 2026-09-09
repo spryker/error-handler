@@ -39,6 +39,15 @@ class ErrorHandler
     protected const HEADER_500 = 'HTTP/1.0 500 Internal Server Error';
 
     /**
+     * Emitted when rendering the error page itself fails, so that a 5xx response never
+     * reaches the client with an empty body. Carries no markup, because the renderer this
+     * replaces may be any of API, CLI or Web, and no exception detail, mirroring the generic
+     * page shown in production.
+     */
+    protected const string FALLBACK_ERROR_BODY = 'Internal Server Error. The server encountered an '
+        . 'internal error and could not complete your request.';
+
+    /**
      * @var \Spryker\Shared\ErrorHandler\ErrorLoggerInterface
      */
     protected $errorLogger;
@@ -78,6 +87,8 @@ class ErrorHandler
             echo $this->errorRenderer->render($exception);
         } catch (Throwable $internalException) {
             $this->errorLogger->log($internalException);
+
+            echo static::FALLBACK_ERROR_BODY;
         }
 
         if ($exit) {

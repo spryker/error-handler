@@ -27,6 +27,22 @@ use Spryker\Shared\ErrorHandler\ErrorRenderer\WebHtmlErrorRenderer;
  */
 class WebErrorHtmlRendererTest extends Unit
 {
+    /**
+     * @var string|null
+     */
+    protected $temporaryErrorPagePath;
+
+    protected function tearDown(): void
+    {
+        if ($this->temporaryErrorPagePath !== null && is_file($this->temporaryErrorPagePath)) {
+            unlink($this->temporaryErrorPagePath);
+        }
+
+        $this->temporaryErrorPagePath = null;
+
+        parent::tearDown();
+    }
+
     public function testWhenZedErrorPageCanRequiredRequireErrorPage(): void
     {
         $this->setupConfigForZedErrorPage();
@@ -87,5 +103,78 @@ class WebErrorHtmlRendererTest extends Unit
             ->getMock();
 
         return $errorPageMock;
+    }
+
+    public function testRenderReturnsConfiguredErrorPageContentUnchangedWhenErrorPageExists(): void
+    {
+        // Arrange
+        $errorPageContent = '<html lang="en"><body>Configured error page</body></html>';
+        $errorPagePath = $this->createTemporaryErrorPage($errorPageContent);
+        $this->prepareConfig(ErrorHandlerConstants::ZED_ERROR_PAGE, $errorPagePath);
+
+        $errorRenderer = new WebHtmlErrorRenderer(WebHtmlErrorRenderer::APPLICATION_ZED);
+
+        // Act
+        $renderedContent = $errorRenderer->render(new Exception('Test exception'));
+
+        // Assert
+        $this->assertSame($errorPageContent, $renderedContent);
+    }
+
+    public function testRenderReturnsFallbackContentWhenConfiguredErrorPageDoesNotExist(): void
+    {
+        // Arrange
+        $errorPagePath = $this->getNonExistingErrorPagePath();
+        $this->prepareConfig(ErrorHandlerConstants::ZED_ERROR_PAGE, $errorPagePath);
+
+        $errorRenderer = new WebHtmlErrorRenderer(WebHtmlErrorRenderer::APPLICATION_ZED);
+
+        // Act
+        $renderedContent = $errorRenderer->render(new Exception('Test exception'));
+
+        // Assert
+        $this->assertNotSame('', $renderedContent, 'The renderer must never return an empty body for a missing error page.');
+        $this->assertSame($this->getFallbackErrorPageContent(), $renderedContent);
+        $this->assertStringNotContainsString($errorPagePath, $renderedContent);
+        $this->assertStringNotContainsString('Test exception', $renderedContent);
+    }
+
+    public function testRenderReturnsFallbackContentWhenConfiguredErrorPageIsNotAFile(): void
+    {
+        // Arrange
+        $this->prepareConfig(ErrorHandlerConstants::YVES_ERROR_PAGE, sys_get_temp_dir());
+
+        $errorRenderer = new WebHtmlErrorRenderer('YVES');
+
+        // Act
+        $renderedContent = $errorRenderer->render(new Exception('Test exception'));
+
+        // Assert
+        $this->assertNotSame('', $renderedContent, 'The renderer must never return an empty body for an unreadable error page.');
+        $this->assertSame($this->getFallbackErrorPageContent(), $renderedContent);
+    }
+
+    protected function createTemporaryErrorPage(string $errorPageContent): string
+    {
+        $errorPagePath = (string)tempnam(sys_get_temp_dir(), 'spryker-error-page-');
+        file_put_contents($errorPagePath, $errorPageContent);
+        $this->temporaryErrorPagePath = $errorPagePath;
+
+        return $errorPagePath;
+    }
+
+    protected function getNonExistingErrorPagePath(): string
+    {
+        $errorPagePath = sys_get_temp_dir() . '/spryker-missing-error-page-' . uniqid() . '/5xx.html';
+        $this->assertFileDoesNotExist($errorPagePath);
+
+        return $errorPagePath;
+    }
+
+    protected function getFallbackErrorPageContent(): string
+    {
+        $reflection = new ReflectionClass(WebHtmlErrorRenderer::class);
+
+        return (string)$reflection->getConstant('FALLBACK_ERROR_PAGE_CONTENT');
     }
 }

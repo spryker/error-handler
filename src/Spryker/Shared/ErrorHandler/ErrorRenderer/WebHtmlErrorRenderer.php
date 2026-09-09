@@ -18,6 +18,13 @@ class WebHtmlErrorRenderer implements ErrorRendererInterface
     public const APPLICATION_ZED = 'ZED';
 
     /**
+     * Emitted when the configured error page is missing or unreadable, so that a 5xx
+     * response never reaches the client with an empty body. Intentionally free of any
+     * exception detail, mirroring the generic page shown in production.
+     */
+    protected const string FALLBACK_ERROR_PAGE_CONTENT = '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Internal Server Error</title></head><body><h1>Internal Server Error</h1><p>The server encountered an internal error and could not complete your request.</p></body></html>';
+
+    /**
      * @var string
      */
     protected $application;
@@ -61,6 +68,10 @@ class WebHtmlErrorRenderer implements ErrorRendererInterface
      */
     protected function getHtmlErrorPageContent($errorPage)
     {
+        if (!is_file($errorPage) || !is_readable($errorPage)) {
+            return static::FALLBACK_ERROR_PAGE_CONTENT;
+        }
+
         return (string)file_get_contents($errorPage);
     }
 }

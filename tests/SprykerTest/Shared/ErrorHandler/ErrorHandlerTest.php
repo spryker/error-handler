@@ -10,6 +10,7 @@ namespace SprykerTest\Shared\ErrorHandler;
 use Codeception\Test\Unit;
 use Exception;
 use Psr\Log\LoggerInterface;
+use ReflectionClass;
 use Spryker\Service\UtilSanitize\UtilSanitizeService;
 use Spryker\Shared\ErrorHandler\ErrorHandler;
 use Spryker\Shared\ErrorHandler\ErrorLogger;
@@ -48,6 +49,8 @@ class ErrorHandlerTest extends Unit
         $errorHandlerMock->expects($this->never())->method('cleanOutputBuffer');
         $errorHandlerMock->expects($this->once())->method('sendExitCode');
 
+        $this->expectOutputString($this->getFallbackErrorBody());
+
         $errorHandlerMock->handleException($exception);
     }
 
@@ -59,6 +62,7 @@ class ErrorHandlerTest extends Unit
         $errorHandlerMock = $this->getErrorHandlerMock($this->getErrorLoggerMock(), $this->getErrorRendererMock());
         // Assert
         $errorHandlerMock->expects($this->once())->method('send404Header')->willThrowException($exception);
+        $this->expectOutputString($this->getFallbackErrorBody());
 
         // Act
         $errorHandlerMock->handleException($exception);
@@ -107,6 +111,8 @@ class ErrorHandlerTest extends Unit
         $errorHandlerMock->expects($this->never())->method('cleanOutputBuffer');
         $errorHandlerMock->expects($this->never())->method('sendExitCode');
 
+        $this->expectOutputString($this->getFallbackErrorBody());
+
         $errorHandlerMock->handleException($exception, false);
     }
 
@@ -140,6 +146,57 @@ class ErrorHandlerTest extends Unit
         $errorHandlerMock->expects($this->never())->method('sendExitCode');
 
         $errorHandlerMock->handleException(new Exception(), false);
+    }
+
+    public function testHandleExceptionEmitsFallbackBodyWhenRendererThrows(): void
+    {
+        // Arrange
+        $errorLoggerMock = $this->getErrorLoggerMock();
+        $errorLoggerMock->expects($this->exactly(2))->method('log');
+
+        $errorRendererMock = $this->getErrorRendererMock();
+        $errorRendererMock->expects($this->once())
+            ->method('render')
+            ->willThrowException(new Exception('Renderer failure'));
+
+        $errorHandlerMock = $this->getErrorHandlerMock($errorLoggerMock, $errorRendererMock);
+        $errorHandlerMock->expects($this->once())->method('send500Header');
+        $errorHandlerMock->expects($this->once())->method('cleanOutputBuffer');
+        $errorHandlerMock->expects($this->never())->method('sendExitCode');
+
+        $fallbackErrorBody = $this->getFallbackErrorBody();
+
+        // Assert
+        $this->assertNotSame('', $fallbackErrorBody, 'A failing renderer must never result in an empty response body.');
+        $this->assertStringNotContainsString('Renderer failure', $fallbackErrorBody);
+        $this->assertStringNotContainsString('Original exception', $fallbackErrorBody);
+        $this->assertStringNotContainsString('<', $fallbackErrorBody, 'The renderer replaced here may be API, CLI or Web, so the fallback must carry no markup.');
+        $this->expectOutputString($fallbackErrorBody);
+
+        // Act
+        $errorHandlerMock->handleException(new Exception('Original exception'), false);
+    }
+
+    public function testHandleExceptionEmitsRenderedBodyAndNoFallbackWhenRendererSucceeds(): void
+    {
+        // Arrange
+        $renderedBody = '<html lang="en"><body>Configured error page</body></html>';
+
+        $errorLoggerMock = $this->getErrorLoggerMock();
+        $errorLoggerMock->expects($this->once())->method('log');
+
+        $errorRendererMock = $this->getErrorRendererMock();
+        $errorRendererMock->expects($this->once())->method('render')->willReturn($renderedBody);
+
+        $errorHandlerMock = $this->getErrorHandlerMock($errorLoggerMock, $errorRendererMock);
+        $errorHandlerMock->expects($this->once())->method('cleanOutputBuffer');
+        $errorHandlerMock->expects($this->never())->method('sendExitCode');
+
+        // Assert
+        $this->expectOutputString($renderedBody);
+
+        // Act
+        $errorHandlerMock->handleException(new Exception('Original exception'), false);
     }
 
     public function testHandleFatalShouldCallHandleExceptionWhenLastErrorExists(): void
@@ -231,5 +288,12 @@ class ErrorHandlerTest extends Unit
             ->getMock();
 
         return $errorRendererMock;
+    }
+
+    protected function getFallbackErrorBody(): string
+    {
+        $reflection = new ReflectionClass(ErrorHandler::class);
+
+        return (string)$reflection->getConstant('FALLBACK_ERROR_BODY');
     }
 }
