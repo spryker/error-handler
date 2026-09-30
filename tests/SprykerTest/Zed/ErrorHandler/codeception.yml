@@ -1,0 +1,20 @@
+namespace: SprykerTest\Zed\ErrorHandler
+
+paths:
+    tests: .
+    data: ../../../_data
+    support: _support
+    output: ../../../_output
+
+coverage:
+    enabled: true
+    remote: false
+    whitelist: { include: ['../../../../src/*'] }
+
+suites:
+    Presentation:
+        path: Presentation
+        actor: ErrorHandlerPresentationTester
+        modules:
+            enabled:
+                - Asserts

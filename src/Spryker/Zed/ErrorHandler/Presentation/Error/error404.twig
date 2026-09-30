@@ -8,6 +8,6 @@
 {% block errorActions %}
     <div class="error-actions">
         <button class="error-button" type="button" onclick="history.back()">{{ 'error.back' | trans }}</button>
-        <a href="{{ path('home') }}" class="error-button" type="button" onclick="">{{ 'error.return-home' | trans }}</a>
+        <a href="/" class="error-button" type="button" onclick="">{{ 'error.return-home' | trans }}</a>
     </div>
 {% endblock %}

@@ -1,6 +1,7 @@
 namespace: SprykerTest
 include:
     - tests/SprykerTest/Shared/ErrorHandler
+    - tests/SprykerTest/Zed/ErrorHandler
 paths:
     tests: tests
     support: .
