@@ -7,9 +7,9 @@
 
 namespace Spryker\Shared\ErrorHandler;
 
-use Spryker\Shared\Kernel\AbstractBundleConfig;
+use Spryker\Shared\Kernel\AbstractSharedConfig;
 
-class ErrorHandlerConfig extends AbstractBundleConfig
+class ErrorHandlerConfig extends AbstractSharedConfig
 {
     /**
      * @api
