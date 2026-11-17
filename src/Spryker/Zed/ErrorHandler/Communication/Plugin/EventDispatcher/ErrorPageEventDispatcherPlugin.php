@@ -18,6 +18,7 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
+ * @SuppressWarnings(PHPMD.UndefinedVariable) PHPMD 2.x flags static property reads as undefined variables; fixed in PHPMD 3.x.
  * @method \Spryker\Zed\ErrorHandler\Communication\ErrorHandlerCommunicationFactory getFactory()
  * @method \Spryker\Zed\ErrorHandler\ErrorHandlerConfig getConfig()
  */

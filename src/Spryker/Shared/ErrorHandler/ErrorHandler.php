@@ -14,6 +14,9 @@ use Spryker\Shared\ErrorHandler\ErrorRenderer\ErrorRendererInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
+/**
+ * @SuppressWarnings(PHPMD.ExitExpression)
+ */
 class ErrorHandler
 {
     /**

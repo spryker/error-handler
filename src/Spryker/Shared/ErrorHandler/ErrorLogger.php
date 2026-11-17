@@ -61,7 +61,8 @@ class ErrorLogger implements ErrorLoggerInterface
     {
         try {
             $this->createMonitoringService()->setError($internalException->getMessage(), $exception);
-        } catch (Throwable) {
+        } catch (Throwable $monitoringException) {
+            error_log(sprintf('Error logging failed twice: %s; %s', $internalException->getMessage(), $monitoringException->getMessage()));
         }
     }
 
